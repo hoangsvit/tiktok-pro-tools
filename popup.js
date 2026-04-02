@@ -1,6 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
   const el = id => document.getElementById(id);
   const set = (id, v) => { const e = el(id); if (e) e.textContent = v; };
+
+  // Keyword Tags Logic
+  let cachedKws = [];
+  let isKwExpanded = false;
+  const kwInput = el('i-keywords');
+  const kwContainer = el('kw-tags-container');
+  const kwMoreBtn = el('kw-tags-more');
+
+  function renderTags() {
+    if (!kwContainer) return;
+    kwContainer.innerHTML = '';
+    kwMoreBtn.style.display = 'none';
+
+    let displayKws = cachedKws;
+    if (cachedKws.length > 5 && !isKwExpanded) {
+      displayKws = cachedKws.slice(0, 5);
+      kwMoreBtn.style.display = 'block';
+      kwMoreBtn.innerText = `Nhiều hơn (+${cachedKws.length - 5})`;
+    } else if (cachedKws.length > 5 && isKwExpanded) {
+      kwMoreBtn.style.display = 'block';
+      kwMoreBtn.innerText = 'Rút gọn lại';
+    }
+
+    displayKws.forEach((kw) => {
+      const tag = document.createElement('div');
+      tag.style.cssText = 'background: rgba(254, 44, 85, 0.1); color: #fe2c55; padding: 2px 8px; border-radius: 12px; font-size: 10px; display: flex; align-items: center; gap: 4px;';
+      tag.innerHTML = `<span>${kw}</span><span style="cursor:pointer; font-weight:bold; font-size:12px;">&times;</span>`;
+      tag.querySelector('span:last-child').onclick = () => {
+        cachedKws.splice(cachedKws.indexOf(kw), 1);
+        saveKws();
+      };
+      kwContainer.appendChild(tag);
+    });
+  }
+
+  function saveKws() {
+    const val = cachedKws.join(',');
+    chrome.storage.sync.set({ blockKeywords: val }, () => {
+      renderTags();
+      chrome.tabs.query({active:true,currentWindow:true}, t => {
+        if(t[0] && t[0].id) chrome.tabs.sendMessage(t[0].id, {type:'UPDATE_SETTINGS',settings:{ blockKeywords: val }});
+      });
+    });
+  }
+
+  if (kwMoreBtn) {
+    kwMoreBtn.onclick = () => {
+      isKwExpanded = !isKwExpanded;
+      renderTags();
+    };
+  }
+
+  if (kwInput) {
+    kwInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = e.target.value.trim().toLowerCase();
+        if (val && !cachedKws.includes(val)) {
+          cachedKws.push(val);
+          saveKws();
+        }
+        e.target.value = '';
+      }
+    });
+  }
+
   function toast(msg) { const t=el('toast'); if(!t)return; t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
   function send(msg, cb) { 
     chrome.tabs.query({active:true,currentWindow:true},tabs=>{ 
@@ -43,10 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   chrome.storage.sync.get(null, data => {
-    const s = { backgroundPlay:true, speed:1, eq:'normal', eqBass:0, eqMid:0, eqTreble:0, cleanMode:false, ...data };
+    const s = { backgroundPlay:true, autoScroll:false, speed:1, eq:'normal', eqBass:0, eqMid:0, eqTreble:0, cleanMode:false, unlockShop:false, blockKeywords:'', ...data };
     
     const cbg = el('c-bg'); if (cbg) cbg.checked = !!s.backgroundPlay;
+    const casc = el('c-autosc'); if (casc) casc.checked = !!s.autoScroll;
     const ccl = el('c-clean'); if (ccl) ccl.checked = !!s.cleanMode;
+    const cshop = el('c-shop'); if (cshop) cshop.checked = !!s.unlockShop;
+    const ikw = el('i-keywords'); if (ikw) ikw.value = '';
+    if (s.blockKeywords) { cachedKws = s.blockKeywords.split(',').filter(k=>k); renderTags(); }
     const seq = el('s-eq'); if (seq) seq.value = s.eq;
 
     const ss = el('s-speed'); 
@@ -74,7 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const apply = () => {
     const cbg = el('c-bg');
+    const casc = el('c-autosc');
     const ccl = el('c-clean');
+    const cshop = el('c-shop');
     const seq = el('s-eq');
     const ss = el('s-speed');
     const advPanel = el('adv-eq-panel');
@@ -88,12 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const settings = { 
       backgroundPlay: cbg.checked, 
+      autoScroll: casc ? casc.checked : false,
       speed: +ss.value, 
       eq: seq ? seq.value : 'normal',
       eqBass: sbass ? +sbass.value : 0,
       eqMid: smid ? +smid.value : 0,
       eqTreble: streble ? +streble.value : 0,
-      cleanMode: ccl ? ccl.checked : false
+      cleanMode: ccl ? ccl.checked : false,
+      unlockShop: cshop ? cshop.checked : false,
+      blockKeywords: cachedKws.join(',')
     };
     chrome.storage.sync.set(settings, () => {
       if (chrome.runtime.lastError) return;
@@ -126,7 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const cbg = el('c-bg'); if (cbg) cbg.addEventListener('change', apply);
+  const casc = el('c-autosc'); if (casc) casc.addEventListener('change', apply);
   const ccl = el('c-clean'); if (ccl) ccl.addEventListener('change', apply);
+  const cshop = el('c-shop'); if (cshop) cshop.addEventListener('change', apply);
+  
   const seq = el('s-eq'); if (seq) seq.addEventListener('change', apply);
 
   const sbass = el('s-bass'); if (sbass) sbass.addEventListener('input', e => { 
