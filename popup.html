@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TikTok Pro Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="hdr">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.15a8.16 8.16 0 0 0 4.77 1.52V7.22a4.85 4.85 0 0 1-1-.53z" fill="#fe2c55"/>
+      </svg>
+      <div><h1>TikTok Pro Tools</h1><p>v1.0.0</p></div>
+    </div>
+    <div class="status" id="status">
+      <span class="dot"></span><span id="stext">Checking…</span>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="reload-warning" style="display:none" id="reload-warning">
+      ⚠ Please reload the TikTok page (F5) for changes to apply or to fix "Context Invalidated" errors.
+    </div>
+    
+    <div class="group">
+      <div class="row hdr-row">
+        <p class="gtitle" style="padding:0; margin:0">Features</p>
+        <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark Mode">
+          <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+      <div class="row">
+        <div class="ri">
+           <span class="rn">
+             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+             Background Play
+           </span>
+           <span class="rd">Video keeps playing when you switch tabs</span>
+        </div>
+        <label class="sw"><input type="checkbox" id="c-bg"><span class="st"><span class="sk"></span></span></label>
+      </div>
+      <div class="row">
+        <div class="ri">
+           <span class="rn">
+             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+             Clean Video Mode
+           </span>
+           <span class="rd">Hide title/tags overlay on screen</span>
+        </div>
+        <label class="sw"><input type="checkbox" id="c-clean"><span class="st"><span class="sk"></span></span></label>
+      </div>
+    </div>
+    
+    <div class="group">
+      <p class="gtitle">Playback</p>
+      <div class="row sr-col">
+        <div class="sr-top">
+          <span class="rn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Speed
+          </span>
+          <span class="rd" id="d-speed" style="font-weight:600; color:var(--tx)">1x</span>
+        </div>
+        <div class="msl" style="width:100%; margin:0; margin-bottom:4px"><input type="range" class="mslider" id="s-speed" min="0" max="4" step="0.05" value="1"></div>
+        <div class="ps-row">
+          <button class="ps-btn" data-v="0.5">0.5</button>
+          <button class="ps-btn" data-v="1">1</button>
+          <button class="ps-btn" data-v="1.5">1.5</button>
+          <button class="ps-btn" data-v="2">2</button>
+          <button class="ps-btn" data-v="3">3</button>
+          <button class="ps-btn" data-v="4">4</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="ri" style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+           <span class="rn" style="margin:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+             Equalizer (EQ)
+           </span>
+           <select id="s-eq" class="tpt-select">
+             <option value="normal">Normal</option>
+             <option value="bass">Bass Boost</option>
+             <option value="treble">Treble Boost</option>
+             <option value="vocal">Vocal Boost</option>
+             <option value="advanced">Advanced</option>
+           </select>
+        </div>
+      </div>
+      <div id="adv-eq-panel" style="display:none; padding:10px 14px; flex-direction:column; gap:8px; border-top:1px solid var(--bd);">
+         <div class="sr-top" style="justify-content:space-between; font-size:11px; margin-bottom:2px;"><span>Bass</span><span id="d-bass">0</span></div>
+         <input type="range" class="mslider" id="s-bass" min="-10" max="10" step="1" value="0">
+         
+         <div class="sr-top" style="justify-content:space-between; font-size:11px; margin-bottom:2px; margin-top:6px;"><span>Mid</span><span id="d-mid">0</span></div>
+         <input type="range" class="mslider" id="s-mid" min="-10" max="10" step="1" value="0">
+         
+         <div class="sr-top" style="justify-content:space-between; font-size:11px; margin-bottom:2px; margin-top:6px;"><span>Treble</span><span id="d-treble">0</span></div>
+         <input type="range" class="mslider" id="s-treble" min="-10" max="10" step="1" value="0">
+      </div>
+    </div>
+
+    <div class="group">
+      <p class="gtitle">Actions</p>
+      <div class="row" style="flex-direction:column; align-items:flex-start; padding-bottom: 12px; gap:8px;">
+        <button class="btn-action" id="btn-screenshot">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          Capture Frame
+        </button>
+        <div style="width:100%; border-top:0.5px solid var(--bd); margin:4px 0;"></div>
+        <p style="font-size:11.5px; font-weight:600; color:var(--tx); margin:0;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:text-top; margin-right:2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download Video/Audio
+        </p>
+        <div style="display:flex; width:100%; gap:6px;">
+           <input type="text" id="f-url" autocomplete="off" spellcheck="false" placeholder="Paste TikTok URL…" style="flex:1; padding:8px 10px; border-radius:8px; border:1px solid var(--btn-bd); background:var(--btn-bg); color:var(--tx); font-size:11px; outline:none; transition:background .2s, border-color .2s;">
+           <button id="f-url-go" style="padding:0 14px; border-radius:8px; border:1px solid rgba(254,44,85,.3); background:rgba(254,44,85,.15); color:var(--red); font-size:14px; font-weight:bold; cursor:pointer; transition:all .2s;">↵</button>
+        </div>
+        <p id="dl-status" style="font-size:10.5px; color:var(--mt); align-self:flex-start; margin:0; display:none;"></p>
+        <div id="dl-result" style="width:100%; display:flex; flex-direction:column; gap:4px;"></div>
+      </div>
+    </div>
+    
+    <div class="group" style="padding-bottom:12px;">
+      <p class="gtitle">🙋‍♂️ Author & Support</p>
+      <div style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 8px; gap:10px;">
+        <div style="font-weight:600; font-size:12.5px; color:var(--tx);">Developed with ❤️ by Diep Van Tien</div>
+        <div style="display:flex; gap:8px;">
+           <a href="https://github.com/diepvantien" target="_blank" style="display:flex; align-items:center; gap:6px; padding:6px 12px; background:var(--btn-bg); border:1px solid var(--bd); border-radius:8px; color:var(--tx); text-decoration:none; font-size:11px; font-weight:600; transition:background .2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+           <a href="mailto:dieptien290620@gmail.com" style="display:flex; align-items:center; gap:6px; padding:6px 12px; background:var(--btn-bg); border:1px solid var(--bd); border-radius:8px; color:var(--tx); text-decoration:none; font-size:11px; font-weight:600; transition:background .2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email</a>
+        </div>
+        <p style="font-size:11px; color:var(--mt); margin:4px 0; line-height:1.45;">If this extension saves your life and improves your workflow every day, please consider supporting me! This helps me maintain the project and add more incredible features. ☕</p>
+        <a href="https://buymeacoffee.com/tixuno" target="_blank" style="display:inline-block; border-radius:8px; overflow:hidden; transition:transform .2s; cursor:pointer;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height:44px; display:block;">
+        </a>
+      </div>
+    </div>
+  <div class="toast" id="toast"></div>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
