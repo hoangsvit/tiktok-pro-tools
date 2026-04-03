@@ -40,7 +40,7 @@ Go to [TikTok.com](https://tiktok.com) and the floating control panel will appea
 
 Created by **diepvantien**. If you find this extension helpful, please consider supporting the development!
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/diepvantien) 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](buymeacoffee.com/tixuno) 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/diepvantien)
 
 **Email:** dieptien290620@gmail.com
