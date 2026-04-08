@@ -423,11 +423,9 @@ chrome.runtime.onMessage.addListener((msg) => {
       }
 
       // Tiêu chí bổ sung: Chữ "Xem video" hoặc icon báo lỗi của tiktok
-        const hasErrorString = /(video|nội dung|content).*?(không khả dụng|bị giới hạn|unavailable|restricted|not available)/i.test(wrapper.innerText || "");
-        const hasShopText = /TikTok Shop/i.test(wrapper.innerText || "");
-        const isShopError = hasErrorString || (!vid && hasShopText);
+      const hasErrorText = /TikTok Shop|(video|Nội dung|content).*?(không khả dụng|bị giới hạn|unavailable|restricted|not available)/i.test(wrapper.innerText || "");
 
-        if (isBlocked && isShopError) {
+      if (isBlocked || (!vid && hasErrorText)) {
         let targetUrl = window.location.href;
         
         // Tìm URL chuẩn trong feed nếu có
@@ -813,15 +811,7 @@ function _applyAll() {
   }
   function _setSpeed(val) { cfg.speed  = +val; _applyAll(); chrome.storage.sync.set({ speed: cfg.speed }); }
 
-  let _applyAllTimeout = null;
-    const _debouncedApplyAll = () => {
-        if (_applyAllTimeout) return;
-        _applyAllTimeout = setTimeout(() => {
-            _applyAll();
-            _applyAllTimeout = null;
-        }, 500); // 500ms debounce to prevent CPU spikes and CAPTCHA flags
-    };
-    new MutationObserver(_debouncedApplyAll).observe(document.body, { childList: true, subtree: true });
+  new MutationObserver(_applyAll).observe(document.body, { childList: true, subtree: true });
   let _lastHref = location.href;
   setInterval(() => { if (location.href !== _lastHref) { _lastHref = location.href; setTimeout(_applyAll, 900); } }, 500);
 

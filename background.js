@@ -35,9 +35,17 @@ async function fetchTikwm(tiktokUrl) {
 
 // Keep SW alive and emit autoScroll pings
 chrome.alarms.create('keepAlive', { periodInMinutes: 0.4 });
+chrome.alarms.create('autoScroll', { periodInMinutes: 0.05 }); // ~3 giây
 
-
-
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === 'autoScroll') {
+        chrome.tabs.query({ url: '*://*.tiktok.com/*' }, (tabs) => {
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, { action: 'scroll' }).catch(() => {});
+            });
+        });
+    }
+});
 
 
 // Auto pause TikTok when other tabs are audible
